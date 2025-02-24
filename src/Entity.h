@@ -7,15 +7,9 @@
 class Entity {
 public:
     Entity();
-    void update(float deltaTime);
-    void render(sf::RenderWindow& window);
-
-    void handleInput();
-
-private:
-    sf::CircleShape shape;
-    sf::Vector2f velocity;  
-    float speed;
+    virtual void update(float deltaTime);
+    virtual void render(sf::RenderWindow& window);
+    virtual void handleInput();
 };
 
 #endif

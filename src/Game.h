@@ -3,7 +3,8 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
-#include "Entity.h"
+#include "entities/Apple.h"
+#include "entities/Snake.h"
 
 class Game {
 public:
@@ -17,7 +18,8 @@ private:
     void render();
 
     sf::RenderWindow window;
-    Entity apple;  
+    Apple apple;  
+    Snake snake;
 };
 
 #endif
