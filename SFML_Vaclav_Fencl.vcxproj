@@ -140,10 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="src\entities\Ball.cpp" />
+    <ClCompile Include="src\entities\Paddle.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\entities\Ball.h" />
+    <ClInclude Include="src\entities\Paddle.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Game.h" />
   </ItemGroup>

@@ -2,8 +2,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <SFML/Graphics.hpp>
-#include "Entity.h"
+#include "entities/Ball.h"
+#include "entities/Paddle.h"
 
 class Game {
 public:
@@ -17,7 +17,9 @@ private:
     void render();
 
     sf::RenderWindow window;
-    Entity apple;  
+    Ball ball;
+    Paddle paddle;
+    Paddle paddleAi;
 };
 
 #endif
