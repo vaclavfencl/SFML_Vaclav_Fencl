@@ -3,7 +3,8 @@
 
 class Paddle {
 public:
-    Paddle(float x, float y);
+    float screenHeight;
+    Paddle(float x, float y, float screenHeight);
 
     void updatePlayer(float dt);               
     void updateAI(float dt, const Ball& ball);
@@ -16,6 +17,8 @@ public:
     sf::FloatRect getBounds() const;
     void setPosition(float x, float y);
     sf::Vector2f getPosition() const;
+    sf::Vector2f getSize() const;
+
 
 private:
     sf::RectangleShape shape;

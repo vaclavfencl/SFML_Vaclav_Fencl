@@ -11,6 +11,16 @@ public:
     void run();
 
 private:
+    int screenWidth = 800;
+    int screenHeight = 600;
+    sf::Font font; //add font, add score.
+    int score1=0;
+    int score2=0;
+    sf::Text scoreText1;
+    sf::Text scoreText2;
+    
+
+
     sf::Clock clock;
     void processEvents();
     void update();
