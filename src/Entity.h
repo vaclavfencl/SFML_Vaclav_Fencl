@@ -7,9 +7,19 @@
 class Entity {
 public:
     Entity();
-    virtual void update(float deltaTime);
+    virtual ~Entity() = default;
+
+    virtual void update(float deltaTime) = 0;
+    virtual void handleInput() {}
+
     virtual void render(sf::RenderWindow& window);
-    virtual void handleInput();
+
+    sf::Vector2f getPosition() const;
+    sf::FloatRect getBounds() const;
+    void setPosition(float x, float y);
+
+protected:
+    sf::Shape* shape = nullptr;  
 };
 
 #endif

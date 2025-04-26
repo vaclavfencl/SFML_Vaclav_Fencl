@@ -1,24 +1,23 @@
 #include "Game.h"
 
-Game::Game()
-    : window(sf::VideoMode(screenWidth, screenHeight), "Snake Game"), 
-    ball(),
-    paddle(30.f, 50.f, screenHeight),
-    paddleAi(750.f, 50.f, screenHeight) {
+Game::Game(sf::RenderWindow& window)
+    : window(window), ball(), paddle(30.f, 50.f, screenHeight), paddleAi(750.f, 50.f, screenHeight)
+{
     if (!font.loadFromFile("Thirdparty/fonts/Roboto-Light.ttf")) {
-
+        // Handle error
     }
+
     scoreText1.setFont(font);
     scoreText1.setCharacterSize(30);
     scoreText1.setFillColor(sf::Color::White);
-    scoreText1.setPosition(200.f, 20.f); // Adjust as needed
+    scoreText1.setPosition(200.f, 20.f);
 
     scoreText2.setFont(font);
     scoreText2.setCharacterSize(30);
     scoreText2.setFillColor(sf::Color::White);
-    scoreText2.setPosition(550.f, 20.f); // Adjust as needed
+    scoreText2.setPosition(550.f, 20.f);
 }
-
+/*
 void Game::run() {
     while (window.isOpen()) {
         processEvents();
@@ -34,7 +33,7 @@ void Game::processEvents() {
             window.close();
         }
     }
-}
+}*/
 
 void Game::update() {
     float deltaTime = clock.restart().asSeconds();
@@ -101,5 +100,4 @@ void Game::render() {
     ball.render(window);
     window.draw(scoreText1);
     window.draw(scoreText2);
-    window.display();
 }

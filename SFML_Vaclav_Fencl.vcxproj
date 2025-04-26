@@ -140,16 +140,33 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="src\buttons\Button.cpp" />
+    <ClCompile Include="src\buttons\ExitButton.cpp" />
+    <ClCompile Include="src\buttons\PlayButton.cpp" />
+    <ClCompile Include="src\buttons\SettingsButton.cpp" />
+    <ClCompile Include="src\core\StateHandler.cpp" />
     <ClCompile Include="src\entities\Ball.cpp" />
     <ClCompile Include="src\entities\Paddle.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\states\GameState.cpp" />
+    <ClCompile Include="src\states\MenuState.cpp" />
+    <ClCompile Include="src\states\SettingsState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\buttons\Button.h" />
+    <ClInclude Include="src\buttons\ExitButton.h" />
+    <ClInclude Include="src\buttons\PlayButton.h" />
+    <ClInclude Include="src\buttons\SettingsButton.h" />
+    <ClInclude Include="src\core\IGameState.h" />
+    <ClInclude Include="src\core\StateHandler.h" />
     <ClInclude Include="src\entities\Ball.h" />
     <ClInclude Include="src\entities\Paddle.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\states\GameState.h" />
+    <ClInclude Include="src\states\MenuState.h" />
+    <ClInclude Include="src\states\SettingsState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

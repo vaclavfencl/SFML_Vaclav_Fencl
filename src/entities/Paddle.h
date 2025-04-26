@@ -1,26 +1,27 @@
 #pragma once
+#ifndef PADDLE_H
+#define PADDLE_H
+
 #include "Ball.h"
 
-class Paddle {
+class Paddle : public Entity {
 public:
-    float screenHeight;
     Paddle(float x, float y, float screenHeight);
 
-    void updatePlayer(float dt);               
+    void updatePlayer(float dt);
     void updateAI(float dt, const Ball& ball);
+    void update(float dt) override {} 
+    void handleInput() override {}    
 
-    void render(sf::RenderWindow& window);
+    sf::Vector2f getSize() const;
+
+private:
+    sf::RectangleShape rectShape;
+    float screenHeight;
+    float speed = 300.f;
 
     void moveUp(float dt);
     void moveDown(float dt);
-
-    sf::FloatRect getBounds() const;
-    void setPosition(float x, float y);
-    sf::Vector2f getPosition() const;
-    sf::Vector2f getSize() const;
-
-
-private:
-    sf::RectangleShape shape;
-    float speed = 300.f;
 };
+
+#endif
