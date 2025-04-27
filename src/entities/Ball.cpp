@@ -26,6 +26,10 @@ void Ball::launch() {
     }
 }
 
+void Ball::setTexture(sf::Texture& texture) {
+    circleShape.setTexture(&texture);
+}
+
 void Ball::update(float deltaTime) {
     int steps = 4;
     float step = deltaTime / steps;
@@ -68,4 +72,8 @@ sf::Vector2f Ball::getDirection() const {
 
 void Ball::setVelocity(sf::Vector2f dir) {
     direction = dir;
+}
+
+void Ball::render(sf::RenderWindow& window) {
+    window.draw(circleShape);
 }

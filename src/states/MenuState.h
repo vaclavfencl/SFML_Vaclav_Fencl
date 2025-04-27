@@ -4,6 +4,7 @@
 
 #include "../core/IGameState.h"
 #include "../core/StateHandler.h"
+#include "../core/TextureManager.h"
 #include "../buttons/Button.h"
 #include "../buttons/PlayButton.h"
 #include "../buttons/SettingsButton.h"
@@ -27,6 +28,8 @@ private:
     sf::Font font;
     sf::RenderWindow& window;
     std::vector<std::unique_ptr<Button>> buttons;
+    sf::Sprite background;
+
 };
 
 #endif

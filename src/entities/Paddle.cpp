@@ -7,6 +7,10 @@ Paddle::Paddle(float x, float y, float screenHeight) : screenHeight(screenHeight
     shape = &rectShape;  
 }
 
+void Paddle::setTexture(sf::Texture& texture) {
+    rectShape.setTexture(&texture);
+}
+
 void Paddle::updatePlayer(float dt) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) moveUp(dt);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) moveDown(dt);
@@ -39,4 +43,8 @@ void Paddle::moveDown(float dt) {
 
 sf::Vector2f Paddle::getSize() const {
     return rectShape.getSize();
+}
+
+void Paddle::render(sf::RenderWindow& window) {
+    window.draw(rectShape);
 }

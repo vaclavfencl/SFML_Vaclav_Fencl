@@ -3,6 +3,7 @@
 #define BALL_H
 
 #include "../Entity.h"
+#include "../core/TextureManager.h"
 
 class Ball : public Entity {
 public:
@@ -13,6 +14,8 @@ public:
     void bounceY();
     void reset();
     void setDirection(float offsetY);
+    void render(sf::RenderWindow& window);
+    void setTexture(sf::Texture& texture);
     sf::Vector2f getDirection() const;
     void setVelocity(sf::Vector2f dir);
 

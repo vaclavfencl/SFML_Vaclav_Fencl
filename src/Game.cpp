@@ -1,11 +1,20 @@
 #include "Game.h"
+#include "core/SoundManager.h"
 
 Game::Game(sf::RenderWindow& window)
     : window(window), ball(), paddle(30.f, 50.f, screenHeight), paddleAi(750.f, 50.f, screenHeight)
 {
-    if (!font.loadFromFile("Thirdparty/fonts/Roboto-Light.ttf")) {
-        // Handle error
-    }
+    if (!font.loadFromFile("Thirdparty/fonts/Roboto-Light.ttf")) {}
+
+    auto& paddleTexture = TextureManager::getTexture("Thirdparty/textures/paddle.png");
+    auto& ballTexture = TextureManager::getTexture("Thirdparty/textures/ball.png");
+
+    SoundManager::loadSound("pong", "Thirdparty/sounds/pong.wav");
+    SoundManager::loadSound("score", "Thirdparty/sounds/score.wav");
+
+    paddle.setTexture(paddleTexture);
+    paddleAi.setTexture(paddleTexture);
+    ball.setTexture(ballTexture);
 
     scoreText1.setFont(font);
     scoreText1.setCharacterSize(30);
@@ -17,44 +26,30 @@ Game::Game(sf::RenderWindow& window)
     scoreText2.setFillColor(sf::Color::White);
     scoreText2.setPosition(550.f, 20.f);
 }
-/*
-void Game::run() {
-    while (window.isOpen()) {
-        processEvents();
-        update();
-        render();
-    }
-}
 
-void Game::processEvents() {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
-            window.close();
-        }
-    }
-}*/
+void Game::update(float dt) {
+    paddle.updatePlayer(dt);
+    paddleAi.updateAI(dt, ball);
+    ball.update(dt);
 
-void Game::update() {
-    float deltaTime = clock.restart().asSeconds();
-    paddle.updatePlayer(deltaTime);
-    paddleAi.updateAI(deltaTime, ball);
-    ball.update(deltaTime);
     if (ball.getPosition().y < 0.f || ball.getPosition().y + 40.f > screenHeight) {
         ball.bounceY();
+        SoundManager::playSound("pong");
     }
-    if (ball.getPosition().x + ball.radius*2 >= screenWidth) {
+
+    if (ball.getPosition().x + ball.radius * 2 >= screenWidth) {
         score1 += 1;
+        SoundManager::playSound("score");
         ball.reset();
     }
     else if (ball.getPosition().x <= 0.f) {
         score2 += 1;
+        SoundManager::playSound("score");
         ball.reset();
     }
 
     if (ball.getBounds().intersects(paddle.getBounds())) {
-        if (ball.getDirection().x < 0 && ball.bounced != 1) { // moving toward player paddle
-            // Move ball to the edge of the paddle
+        if (ball.getDirection().x < 0 && ball.bounced != 1) {
             ball.setPosition(paddle.getPosition().x + paddle.getSize().x + 0.1f, ball.getPosition().y);
 
             float paddleCenterY = paddle.getPosition().y + paddle.getSize().y / 2.f;
@@ -65,14 +60,12 @@ void Game::update() {
             ball.setDirection(normalized);
             ball.bounceX();
             ball.bounced = 1;
+            SoundManager::playSound("pong");
         }
     }
 
-
-
     if (ball.getBounds().intersects(paddleAi.getBounds())) {
-        if (ball.getDirection().x > 0 && ball.bounced != 0) { // ball is moving right
-            // Move ball just left of the paddle
+        if (ball.getDirection().x > 0 && ball.bounced != 0) {
             ball.setPosition(paddleAi.getPosition().x - ball.radius * 2.f - 0.1f, ball.getPosition().y);
 
             float paddleCenterY = paddleAi.getPosition().y + paddleAi.getSize().y / 2.f;
@@ -83,11 +76,9 @@ void Game::update() {
             ball.setDirection(normalized);
             ball.bounceX();
             ball.bounced = 0;
+            SoundManager::playSound("pong");
         }
     }
-
-
-
 
     scoreText1.setString(std::to_string(score1));
     scoreText2.setString(std::to_string(score2));

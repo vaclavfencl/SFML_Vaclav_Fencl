@@ -11,11 +11,14 @@ public:
 
     virtual void update(const sf::RenderWindow& window);
     virtual void render(sf::RenderWindow& window);
-    virtual void onClick() = 0; 
+    virtual void onClick() = 0;
 
     bool isMouseOver(const sf::RenderWindow& window) const;
+    static void playClickSound();
 
 protected:
+    static bool clickSoundLoaded;
+
     sf::RectangleShape body;
     sf::Text label;
 };

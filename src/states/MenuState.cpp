@@ -1,4 +1,5 @@
 #include "MenuState.h"
+#include "../core/SoundManager.h"
 
 MenuState::MenuState(StateHandler& handler, sf::RenderWindow& window)
     : stateHandler(handler), window(window)
@@ -9,6 +10,7 @@ MenuState::MenuState(StateHandler& handler, sf::RenderWindow& window)
     buttons.push_back(std::make_unique<SettingsButton>(sf::Vector2f(200, 60), sf::Vector2f(300, 300), font, stateHandler, window));
     buttons.push_back(std::make_unique<ExitButton>(sf::Vector2f(200, 60), sf::Vector2f(300, 400), font, window));
 
+    background.setTexture(TextureManager::getTexture("Thirdparty/textures/background.png"));
 }
 
 void MenuState::handleInput(sf::RenderWindow& window) {
@@ -21,6 +23,7 @@ void MenuState::handleInput(sf::RenderWindow& window) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 for (auto& button : buttons) {
                     if (button->isMouseOver(window)) {
+                        button->playClickSound();
                         button->onClick();
                     }
                 }
@@ -31,11 +34,13 @@ void MenuState::handleInput(sf::RenderWindow& window) {
 
 void MenuState::update(float dt) {
     for (auto& button : buttons) {
-        button->update(window); 
+        button->update(window);
     }
 }
 
 void MenuState::render(sf::RenderWindow& window) {
+    window.draw(background);
+
     for (auto& button : buttons) {
         button->render(window);
     }
