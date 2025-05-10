@@ -27,8 +27,12 @@ void Ball::launch() {
 }
 
 void Ball::setTexture(sf::Texture& texture) {
-    circleShape.setTexture(&texture);
+    sprite.setTexture(texture); 
+    animation = AnimationManager(sprite, 4, 0.15f, sf::Vector2i(20, 20)); 
+    //sprite.setOrigin(10.f, 10.f);
+    sprite.setScale(2.f, 2.f);
 }
+
 
 void Ball::update(float deltaTime) {
     int steps = 4;
@@ -37,6 +41,9 @@ void Ball::update(float deltaTime) {
     for (int i = 0; i < steps; ++i) {
         shape->move(direction * speed * step);
     }
+    sprite.setPosition(shape->getPosition());
+
+    animation.update(deltaTime);
 }
 
 void Ball::bounceX() {
@@ -75,5 +82,6 @@ void Ball::setVelocity(sf::Vector2f dir) {
 }
 
 void Ball::render(sf::RenderWindow& window) {
-    window.draw(circleShape);
+    window.draw(sprite);
+    //window.draw(circleShape);
 }

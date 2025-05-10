@@ -4,6 +4,7 @@
 
 #include "../Entity.h"
 #include "../core/TextureManager.h"
+#include "../core/AnimationManager.h"
 
 class Ball : public Entity {
 public:
@@ -24,6 +25,9 @@ public:
 
 private:
     sf::CircleShape circleShape;
+    sf::Sprite sprite;
+    AnimationManager animation;
+
     sf::Vector2f direction;
     float speed = 400.f;
 

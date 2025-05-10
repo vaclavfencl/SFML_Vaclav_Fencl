@@ -148,6 +148,7 @@
     <ClCompile Include="src\buttons\ResumeButton.cpp" />
     <ClCompile Include="src\buttons\SettingsButton.cpp" />
     <ClCompile Include="src\buttons\VolumeButton.cpp" />
+    <ClCompile Include="src\core\AnimationManager.cpp" />
     <ClCompile Include="src\core\Settings.cpp" />
     <ClCompile Include="src\core\SoundManager.cpp" />
     <ClCompile Include="src\core\StateHandler.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="src\buttons\ResumeButton.h" />
     <ClInclude Include="src\buttons\SettingsButton.h" />
     <ClInclude Include="src\buttons\VolumeButton.h" />
+    <ClInclude Include="src\core\AnimationManager.h" />
     <ClInclude Include="src\core\IGameState.h" />
     <ClInclude Include="src\core\Settings.h" />
     <ClInclude Include="src\core\SoundManager.h" />
