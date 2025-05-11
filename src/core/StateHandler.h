@@ -2,6 +2,7 @@
 #include <memory>
 #include <stack>
 #include "IGameState.h"
+#include <iostream>
 
 class StateHandler {
 public:

@@ -5,7 +5,7 @@
 
 class GameState : public IGameState {
 public:
-    GameState(StateHandler& handler, sf::RenderWindow& window); 
+    GameState(StateHandler& handler, sf::RenderWindow& window);
 
     void handleInput(sf::RenderWindow& window) override;
     void update(float dt) override;

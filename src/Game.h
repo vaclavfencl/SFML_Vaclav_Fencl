@@ -11,7 +11,7 @@ class Game {
 public:
     Game(sf::RenderWindow& window);
 
-    void update(float dt); 
+    void update(float dt);
     void render();
 
 private:

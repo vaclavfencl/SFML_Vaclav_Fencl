@@ -5,10 +5,13 @@ void StateHandler::pushState(std::shared_ptr<IGameState> state) {
 }
 
 void StateHandler::popState() {
-    if (!states.empty()) states.pop();
+    if (!states.empty()) {
+        states.pop();
+    }
 }
 
 void StateHandler::changeState(std::shared_ptr<IGameState> state) {
+    std::cout << "Changing state to: " << typeid(*state).name() << "\n";
     popState();
     pushState(state);
 }

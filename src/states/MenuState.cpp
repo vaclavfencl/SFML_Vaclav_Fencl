@@ -5,10 +5,13 @@ MenuState::MenuState(StateHandler& handler, sf::RenderWindow& window)
     : stateHandler(handler), window(window)
 {
     font.loadFromFile("Thirdparty/fonts/Roboto-Light.ttf");
+    std::cout << "MenuState";
 
-    buttons.push_back(std::make_unique<PlayButton>(sf::Vector2f(200, 60), sf::Vector2f(300, 200), font, stateHandler, window));
-    buttons.push_back(std::make_unique<SettingsButton>(sf::Vector2f(200, 60), sf::Vector2f(300, 300), font, stateHandler, window));
-    buttons.push_back(std::make_unique<ExitButton>(sf::Vector2f(200, 60), sf::Vector2f(300, 400), font, window));
+    buttons.push_back(std::make_unique<PlayButton>(sf::Vector2f(200, 60), sf::Vector2f(300, 150), font, stateHandler, window));
+    buttons.push_back(std::make_unique<MultiplayerButton>(sf::Vector2f(200, 60), sf::Vector2f(300, 250), font, stateHandler, window));
+    buttons.push_back(std::make_unique<SettingsButton>(sf::Vector2f(200, 60), sf::Vector2f(300, 350), font, stateHandler, window));
+    buttons.push_back(std::make_unique<ExitButton>(sf::Vector2f(200, 60), sf::Vector2f(300, 450), font, window));
+
 
     background.setTexture(TextureManager::getTexture("Thirdparty/textures/background.png"));
 }

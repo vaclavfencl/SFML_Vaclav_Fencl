@@ -142,8 +142,11 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="src\buttons\BackButton.cpp" />
     <ClCompile Include="src\buttons\Button.cpp" />
+    <ClCompile Include="src\buttons\ConnectButton.cpp" />
     <ClCompile Include="src\buttons\ExitButton.cpp" />
     <ClCompile Include="src\buttons\FullscreenButton.cpp" />
+    <ClCompile Include="src\buttons\HostButton.cpp" />
+    <ClCompile Include="src\buttons\MultiplayerButton.cpp" />
     <ClCompile Include="src\buttons\PlayButton.cpp" />
     <ClCompile Include="src\buttons\ResumeButton.cpp" />
     <ClCompile Include="src\buttons\SettingsButton.cpp" />
@@ -159,14 +162,19 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\states\GameState.cpp" />
     <ClCompile Include="src\states\MenuState.cpp" />
+    <ClCompile Include="src\states\MpGameState.cpp" />
+    <ClCompile Include="src\states\MultiplayerState.cpp" />
     <ClCompile Include="src\states\PauseState.cpp" />
     <ClCompile Include="src\states\SettingsState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\buttons\BackButton.h" />
     <ClInclude Include="src\buttons\Button.h" />
+    <ClInclude Include="src\buttons\ConnectButton.h" />
     <ClInclude Include="src\buttons\ExitButton.h" />
     <ClInclude Include="src\buttons\FullscreenButton.h" />
+    <ClInclude Include="src\buttons\HostButton.h" />
+    <ClInclude Include="src\buttons\MultiplayerButton.h" />
     <ClInclude Include="src\buttons\PlayButton.h" />
     <ClInclude Include="src\buttons\ResumeButton.h" />
     <ClInclude Include="src\buttons\SettingsButton.h" />
@@ -183,6 +191,8 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\states\GameState.h" />
     <ClInclude Include="src\states\MenuState.h" />
+    <ClInclude Include="src\states\MpGameState.h" />
+    <ClInclude Include="src\states\MultiplayerState.h" />
     <ClInclude Include="src\states\PauseState.h" />
     <ClInclude Include="src\states\SettingsState.h" />
   </ItemGroup>

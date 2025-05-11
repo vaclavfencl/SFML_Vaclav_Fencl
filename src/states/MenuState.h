@@ -9,6 +9,8 @@
 #include "../buttons/PlayButton.h"
 #include "../buttons/SettingsButton.h"
 #include "../buttons/ExitButton.h"
+#include "../buttons/MultiplayerButton.h"
+#include <iostream>
 
 #include <vector>
 #include <memory>

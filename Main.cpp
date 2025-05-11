@@ -4,6 +4,7 @@
 #include "src/states/MenuState.h"
 #include "src/states/GameState.h"
 #include "src/states/PauseState.h"
+#include "src/core/SoundManager.h"
 
 unsigned int screenWidth = 800;
 unsigned int screenHeight = 600;
@@ -15,6 +16,8 @@ int main() {
     StateHandler stateHandler;
     stateHandler.pushState(std::make_shared<MenuState>(stateHandler, window));
 
+    SoundManager::loadMusic("Thirdparty/sounds/background_music.flac");
+    SoundManager::playMusic(true);
     sf::Clock clock;
 
     while (window.isOpen()) {
@@ -27,16 +30,16 @@ int main() {
 
         float dt = clock.restart().asSeconds();
 
-        if (stateHandler.getCurrentState()) {
-            stateHandler.getCurrentState()->handleInput(window);
-            stateHandler.getCurrentState()->update(dt);
+        if (auto currentState = stateHandler.getCurrentState()) {
+            currentState->handleInput(window);
+            currentState->update(dt);
 
-            if (!dynamic_cast<GameState*>(stateHandler.getCurrentState().get()) &&
-                !dynamic_cast<PauseState*>(stateHandler.getCurrentState().get())) {
+            if (!dynamic_cast<GameState*>(currentState.get()) &&
+                !dynamic_cast<PauseState*>(currentState.get())) {
                 window.clear();
             }
 
-            stateHandler.getCurrentState()->render(window);
+            currentState->render(window);
             window.display();
         }
     }

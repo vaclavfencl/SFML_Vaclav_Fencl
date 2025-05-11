@@ -18,7 +18,7 @@ void GameState::handleInput(sf::RenderWindow& window) {
 }
 
 void GameState::update(float dt) {
-    game.update(dt); 
+    game.update(dt);
 }
 
 void GameState::render(sf::RenderWindow& window) {
