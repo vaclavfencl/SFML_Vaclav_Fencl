@@ -15,7 +15,7 @@ Zkompiluje projekt
 Zkopíruje potřebné knihovny a zdroje
 Spustí výsledný .exe soubor
 
-Linux (pomocí run.sh)
+**Linux (pomocí run.sh)**
 Otevři terminál.
 Ujisti se, že skript má práva pro spuštění:
 chmod +x run.sh
