@@ -12,7 +12,7 @@ Na Linuxu: g++ a make
 
 **Windows (pomocí run.bat)**
 
-Spusť soubor run.bat
+Spustit soubor run.bat
 
 
 Skript:
@@ -30,13 +30,11 @@ Spustí výsledný .exe soubor
 
 **Linux (pomocí run.sh)**
 
-Otevři terminál.
-
-Ujisti se, že skript má práva pro spuštění:
+Otevřít terminál.
 
 chmod +x run.sh
 
-Spusť skript: ./run.sh
+Spustit skript: ./run.sh
 
 
 Skript:
