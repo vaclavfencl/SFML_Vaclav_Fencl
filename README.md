@@ -7,7 +7,7 @@ Nainstalovaný kompilátor C++
 
 Na Windows: Visual Studio s podporou C++
 
-Na Linuxu: g++ a make
+Na Linuxu: g++ a make a nainstalovaná sfml2 knihovna 
 
 
 **Windows (pomocí run.bat)**
