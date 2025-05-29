@@ -1,23 +1,21 @@
 @echo off
 echo [INFO] Creating build directory...
 if not exist build mkdir build
-cd build
 
 echo [INFO] Running CMake...
-cmake -DSFML_DIR=../Thirdparty/SFML-2.6.1/bin ..
+cmake -S . -B build -DSFML_DIR=Thirdparty/SFML-2.6.1/bin
 
 echo [INFO] Building project...
-cmake --build . --config Release
+cmake --build build || exit 1
+
+echo [INFO] Copying Thirdparty folders...
+xcopy /E /I /Y "Thirdparty\fonts" "build\Thirdparty\fonts"
+xcopy /E /I /Y "Thirdparty\sounds" "build\Thirdparty\sounds"
+xcopy /E /I /Y "Thirdparty\textures" "build\Thirdparty\textures"
 
 echo [INFO] Copying SFML DLLs...
-xcopy /Y /Q "..\Thirdparty\SFML-2.6.1\bin\*.dll" "Release\"
+xcopy /Y /Q "Thirdparty\SFML-2.6.1\bin\*.dll" "build"
 
-echo [INFO] Copying Thirdparty folder...
-xcopy /E /I /Y "..\Thirdparty\fonts" "Release\Thirdparty\fonts"
-xcopy /E /I /Y "..\Thirdparty\sounds" "Release\Thirdparty\sounds"
-xcopy /E /I /Y "..\Thirdparty\textures" "Release\Thirdparty\textures"
-
-echo [INFO] Running the app...
-cd .\Release
+echo [INFO] Running the app from build folder...
+cd build
 SFML_Vaclav_Fencl.exe
-

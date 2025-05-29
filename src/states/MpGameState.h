@@ -7,6 +7,8 @@
 #include <SFML/Network.hpp>
 #include <thread>
 #include <atomic>
+#include <queue>
+#include <mutex>
 
 class MpGameState : public IGameState {
 public:
@@ -18,6 +20,11 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
+
+    std::mutex packetMutex;
+    sf::Packet latestPacket;
+    bool hasNewPacket = false;
+
     StateHandler& stateHandler;
     sf::RenderWindow& window;
     bool isHost;
@@ -31,6 +38,9 @@ private:
     Ball ball;
     Paddle paddleHost;
     Paddle paddleClient;
+
+    sf::Vector2f ballRenderPos, ballTargetPos;
+    sf::Vector2f paddleHostRenderPos, paddleHostTargetPos;
 
     sf::Font font;
     sf::Text scoreText1, scoreText2;

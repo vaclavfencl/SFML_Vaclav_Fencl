@@ -85,3 +85,9 @@ void Ball::render(sf::RenderWindow& window) {
     window.draw(sprite);
     //window.draw(circleShape);
 }
+
+void Ball::setPosition(float x, float y) {
+    if (shape)
+        shape->setPosition(x, y);
+    sprite.setPosition(x, y); 
+}

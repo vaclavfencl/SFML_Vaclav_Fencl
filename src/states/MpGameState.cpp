@@ -52,54 +52,94 @@ void MpGameState::hostListen() {
         std::cerr << "[HOST] Failed to listen on port 4500\n";
         return;
     }
-    if (listener.accept(socket) == sf::Socket::Done) {
-        socket.setBlocking(false);
-        std::cout << "[HOST] Client connected\n";
-        isConnected = true;
-        std::thread(&MpGameState::networkLoop, this).detach();
-    }
+
+    std::thread([this]() {
+        sf::UdpSocket udpSocket;
+        udpSocket.setBlocking(false);
+        sf::Packet packet;
+        packet << std::string("PONG_HOST");
+
+        while (running && !isConnected) {
+            udpSocket.send(packet, sf::IpAddress::Broadcast, 4502);
+            sf::sleep(sf::seconds(1));
+        }
+        }).detach();
+
+        std::cout << "[HOST] Listening on LAN IP: " << sf::IpAddress::getLocalAddress() << ":4500\n";
+
+        if (listener.accept(socket) == sf::Socket::Done) {
+            socket.setBlocking(false);
+            std::cout << "[HOST] Client connected\n";
+            isConnected = true;
+            std::thread(&MpGameState::networkLoop, this).detach();
+        }
 }
 
+
 void MpGameState::clientConnect() {
-    if (socket.connect("127.0.0.1", 4500, sf::seconds(5)) == sf::Socket::Done) {
+    sf::UdpSocket udpSocket;
+    if (udpSocket.bind(4502) != sf::Socket::Done) {
+        std::cerr << "[CLIENT] Failed to bind UDP socket\n";
+        return;
+    }
+
+    udpSocket.setBlocking(false);
+    sf::IpAddress hostIp;
+    sf::Clock timeoutClock;
+    bool foundHost = false;
+
+    while (timeoutClock.getElapsedTime().asSeconds() < 5.0f) {
+        sf::Packet packet;
+        sf::IpAddress sender;
+        unsigned short port;
+
+        if (udpSocket.receive(packet, sender, port) == sf::Socket::Done) {
+            std::string header;
+            if (packet >> header && header == "PONG_HOST") {
+                hostIp = sender;
+                foundHost = true;
+                break;
+            }
+        }
+        sf::sleep(sf::milliseconds(100));
+    }
+
+    udpSocket.unbind();
+
+    if (!foundHost) {
+        std::cerr << "[CLIENT] Could not find host on LAN\n";
+        return;
+    }
+
+    std::cout << "[CLIENT] Found host at " << hostIp.toString() << ", attempting to connect...\n";
+
+    if (socket.connect(hostIp, 4500, sf::seconds(5)) == sf::Socket::Done) {
         socket.setBlocking(false);
         std::cout << "[CLIENT] Connected to host\n";
         isConnected = true;
         std::thread(&MpGameState::networkLoop, this).detach();
     }
     else {
-        std::cerr << "[CLIENT] Connection failed\n";
+        std::cerr << "[CLIENT] Connection to host failed\n";
     }
 }
 
+
 void MpGameState::networkLoop() {
+    sf::Clock rateLimiter;
+    const sf::Time targetFrameTime = sf::seconds(1.f / 60.f);  
+
     while (running) {
         if (!isConnected) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            sf::sleep(targetFrameTime);
             continue;
         }
 
-
-        /*sf::Packet packet;
-        if (socket.receive(packet) == sf::Socket::Done) {
-            std::string type, data;
-            if (packet >> type >> data && type == "COMMAND") {
-                std::cout << "[COMMAND RECEIVED] " << data << "\n";
-
-                if (data.rfind("SOUND:", 0) == 0) {
-                    std::string soundName = data.substr(6);
-                    SoundManager::playSound(soundName);
-                }
-                else if (data == "EXIT") {
-                    std::cout << "[COMMAND] Exit requested\n";
-                    running = false;
-                    stateHandler.changeState(std::make_shared<MenuState>(stateHandler, window));
-                }
-                else {
-                    std::cerr << "[COMMAND] Unknown command: " << data << "\n";
-                }
-            }
-        }*/
+        sf::Time elapsed = rateLimiter.getElapsedTime();
+        if (elapsed < targetFrameTime) {
+            sf::sleep(targetFrameTime - elapsed);
+        }
+        rateLimiter.restart();
 
         if (isHost) {
             sf::Packet inputPacket;
@@ -107,42 +147,48 @@ void MpGameState::networkLoop() {
                 float y;
                 if (inputPacket >> y) {
                     paddleClient.setPosition(paddleClient.getPosition().x, y);
-                    std::cout << "[HOST] Received client paddle Y: " << y << "\n";
                 }
             }
 
             sf::Packet gamePacket;
+            gamePacket.clear();
             gamePacket << ball.getPosition().x << ball.getPosition().y
                 << ball.getDirection().x << ball.getDirection().y
-                << paddleHost.getPosition().y //<< paddleClient.getPosition().y
+                << paddleHost.getPosition().x << paddleHost.getPosition().y
                 << score1 << score2;
-            socket.send(gamePacket);
+            if (socket.send(gamePacket) != sf::Socket::Done) {
+                std::cerr << "[HOST] Failed to send packet!\n";
+            }
         }
         else {
             sf::Packet inputPacket;
             inputPacket << paddleClient.getPosition().y;
-            socket.send(inputPacket);
-            std::cout << "[CLIENT] Sent paddle Y: " << paddleClient.getPosition().y << "\n";
+            if (socket.send(inputPacket) != sf::Socket::Done) {
+                std::cerr << "[CLIENT] Failed to send input!\n";
+            }
 
             sf::Packet gamePacket;
             if (socket.receive(gamePacket) == sf::Socket::Done) {
-                float bx, by, dx, dy, hostY, clientY;
+                std::lock_guard<std::mutex> lock(packetMutex);
+                latestPacket = gamePacket;
+                hasNewPacket = true;
+                float bx, by, dx, dy, hostX, hostY;
                 int s1, s2;
-                if (gamePacket >> bx >> by >> dx >> dy >> hostY >> /*clientY >>*/ s1 >> s2) {
+                if (gamePacket >> bx >> by >> dx >> dy >> hostX >> hostY >> s1 >> s2) {
                     ball.setPosition(bx, by);
-                    ball.setVelocity(sf::Vector2f(dx, dy));
-                    paddleHost.setPosition(paddleHost.getPosition().x, hostY);
-                    //paddleClient.setPosition(paddleClient.getPosition().x, clientY);
+                    ball.setVelocity({ dx, dy });
+                    paddleHost.setPosition(hostX, hostY);
                     score1 = s1;
                     score2 = s2;
-                    std::cout << "[CLIENT] Game updated: Ball(" << bx << ", " << by << "), Scores(" << s1 << ":" << s2 << ")\n";
+                }
+                else {
+                    std::cerr << "[CLIENT] Failed to parse packet!\n";
                 }
             }
         }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(8));
     }
 }
+
 
 void MpGameState::handleInput(sf::RenderWindow& window) {
     sf::Event event;
@@ -210,7 +256,20 @@ void MpGameState::update(float dt) {
     }
     else {
         paddleClient.updatePlayer(dt);
-        //ball.update(dt);
+
+        std::lock_guard<std::mutex> lock(packetMutex);
+        if (hasNewPacket) {
+            float bx, by, dx, dy, hostX, hostY;
+            int s1, s2;
+            if (latestPacket >> bx >> by >> dx >> dy >> hostX >> hostY >> s1 >> s2) {
+                ball.setPosition(bx, by);
+                ball.setVelocity({ dx, dy });
+                paddleHost.setPosition(hostX, hostY);
+                score1 = s1;
+                score2 = s2;
+            }
+            hasNewPacket = false;
+        }
     }
 
     scoreText1.setString(std::to_string(score1));

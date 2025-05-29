@@ -16,6 +16,7 @@ public:
     void reset();
     void setDirection(float offsetY);
     void render(sf::RenderWindow& window);
+    void setPosition(float x, float y);
     void setTexture(sf::Texture& texture);
     sf::Vector2f getDirection() const;
     void setVelocity(sf::Vector2f dir);
