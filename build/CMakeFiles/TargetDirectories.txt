@@ -1,3 +1,0 @@
-C:/Users/vis12/Desktop/Bakalářská práce/SFML_Vaclav_Fencl/build/CMakeFiles/SFML_Vaclav_Fencl.dir
-C:/Users/vis12/Desktop/Bakalářská práce/SFML_Vaclav_Fencl/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/vis12/Desktop/Bakalářská práce/SFML_Vaclav_Fencl/build/CMakeFiles/ZERO_CHECK.dir
